@@ -6,12 +6,12 @@ const grid = [];
 
 const tileSize = 16;
 const padding = 2;
+const emptyTileColor = '#2b2b2b';
 let activeFgColor = 'White';
 let activeBgColor = 'Black';
 
 // Basic canvas settings
 ctx.font = `${tileSize - 4}px sans-serif`;
-ctx.fillStyle = '#000000';
 ctx.textAlign = 'center'; 
 ctx.textBaseline = 'middle';
 
@@ -58,7 +58,7 @@ for(let i = 0; i < tilesNumber; i++) {
       fg: 'White',
       bg: 'Black',
     });
-    ctx.fillStyle = '#2b2b2b';
+    ctx.fillStyle = emptyTileColor;
     ctx.fillRect(x, y, tileSize, tileSize);
     ctx.fillStyle = activeFgColor;
     ctx.fillText(' ', x + (tileSize / 2), y + (tileSize / 2));
@@ -101,7 +101,6 @@ for (const key in colorTableFg) {
   button.classList.add('width40');
   button.addEventListener('click', function() {
     activeFgColor = this.textContent;
-    // Add class to active button
     activeFgColorButton.classList.toggle('active');
     this.classList.toggle('active');
     activeFgColorButton = this;
@@ -118,7 +117,6 @@ for (const key in colorTableBg) {
   button.classList.add('width40');
   button.addEventListener('click', function() {
     activeBgColor = this.textContent;
-    // Add class to active button
     activeBgColorButton.classList.toggle('active');
     this.classList.toggle('active');
     activeBgColorButton = this;
@@ -128,19 +126,36 @@ for (const key in colorTableBg) {
 activeBgColorButton = document.getElementById('BgBlack');
 activeBgColorButton.classList.toggle('active');
 
+// Eraser button
+const eraserbutton = createButton('btn-eraser', 'Eraser');
+eraserbutton.classList.add('width90');
+eraserbutton.addEventListener('click', function() {
+  activeCharacter = null;
+  activeCharButton.classList.toggle('active');
+  this.classList.toggle('active');
+  activeCharButton = this;
+});
+charsButtonsElement.appendChild(eraserbutton);
+
 // Create a button for grid reset
-const fillbutton = createButton(`btn-fill`, 'Fill the screen with the selected character');
+const fillbutton = createButton('btn-fill', 'Fill the screen with the selected character');
 fillbutton.classList.add('width90');
 fillbutton.addEventListener('click', function() {
   for (let j = 0; j < grid.length; j++) {
     for (let i = 0; i < grid[j].length; i++) {
       grid[i][j].char = activeCharacter;
-      grid[i][j].fg = activeFgColor;
-      grid[i][j].bg = activeBgColor;
-      ctx.fillStyle = activeBgColor;
+      if(!grid[i][j].char) {
+        grid[i][j].fg = emptyTileColor;
+        grid[i][j].bg = emptyTileColor;
+      }
+      else {
+        grid[i][j].fg = activeFgColor;
+        grid[i][j].bg = activeBgColor;
+      }
+      ctx.fillStyle = grid[i][j].bg;
       ctx.fillRect(grid[i][j].x, grid[i][j].y, tileSize, tileSize);
-      ctx.fillStyle = activeFgColor;
-      ctx.fillText(grid[i][j].char, grid[i][j].x + (tileSize / 2), grid[i][j].y + (tileSize / 2));
+      ctx.fillStyle = grid[i][j].fg;
+      ctx.fillText(grid[i][j].char ? grid[i][j].char : ' ', grid[i][j].x + (tileSize / 2), grid[i][j].y + (tileSize / 2));
     }
   }
   generateCode();
@@ -206,12 +221,18 @@ function mouseClick(e) {
       if(x > grid[i][j].x && x < grid[i][j].x + tileSize + padding
         && y > grid[i][j].y && y < grid[i][j].y + tileSize + padding) {
         grid[i][j].char = activeCharacter;
-        grid[i][j].fg = activeFgColor;
-        grid[i][j].bg = activeBgColor;
-        ctx.fillStyle = activeBgColor;
+        if(!grid[i][j].char) {
+          grid[i][j].fg = emptyTileColor;
+          grid[i][j].bg = emptyTileColor;
+        }
+        else {
+          grid[i][j].fg = activeFgColor;
+          grid[i][j].bg = activeBgColor;
+        }
+        ctx.fillStyle = grid[i][j].bg;
         ctx.fillRect(grid[i][j].x, grid[i][j].y, tileSize, tileSize);
-        ctx.fillStyle = activeFgColor;
-        ctx.fillText(grid[i][j].char, grid[i][j].x + (tileSize / 2), grid[i][j].y + (tileSize / 2));
+        ctx.fillStyle = grid[i][j].fg;
+        ctx.fillText(grid[i][j].char ? grid[i][j].char : ' ', grid[i][j].x + (tileSize / 2), grid[i][j].y + (tileSize / 2));
         return;
       }
     }
