@@ -136,6 +136,15 @@ h2 {margin: 15px auto; font-size: 35px;}
   background: #e94560;
 }
 
+button#FgBlack:hover, #BgBlack:hover, #BgBlack.active, #FgBlack.active {background: black;}
+button#FgRed:hover, button#BgRed:hover, #FgRed.active, #BgRed.active {background: red;}
+button#FgGreen:hover, button#BgGreen:hover, #FgGreen.active, #BgGreen.active {background: green;}
+button#FgYellow:hover, button#BgYellow:hover, #FgYellow.active, #BgYellow.active {background: yellow; color: black;}
+button#FgBlue:hover, button#BgBlue:hover, #FgBlue.active, #BgBlue.active {background: blue;}
+button#FgMagenta:hover, button#BgMagenta:hover, #FgMagenta.active, #BgMagenta.active {background: magenta; color: black;}
+button#FgCyan:hover, button#BgCyan:hover, #FgCyan.active, #BgCyan.active {background: cyan; color: black;}
+button#FgWhite:hover, button#BgWhite:hover, #FgWhite.active, #BgWhite.active {background: white; color: black;}
+
 ul {
   list-style-type: none;
   margin: 0;
